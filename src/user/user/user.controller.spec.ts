@@ -15,7 +15,7 @@ describe('UserController', () => {
 
   it('should can say hello', async () => {
     const response = await controller.sayHello('fajrul');
-    expect(response).toBe('hello fajrul');
+    expect(response).toBe('Hello fajrul');
   });
 
   it('should can view template', async () => {
