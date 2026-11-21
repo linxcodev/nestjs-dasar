@@ -3,7 +3,7 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { Connection, createConnection, MongoDBConnection, MysqlConnection } from './connection/connection';
 import { mailservice, MailService } from './mail/mail.service';
-import { createUserRepository, UserRepository } from './user-repository/user-repository';
+import { UserRepository } from './user-repository/user-repository';
 import { MemberService } from './member/member.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -31,15 +31,17 @@ import { ConfigService } from '@nestjs/config';
       provide: 'EmailService',
       useExisting: MailService
     },
-    {
-      // factory provider
-      // bisa inject dari depedency lain
-      // menggunakan function untuk membuatnya
-      provide: UserRepository, 
-      useFactory: createUserRepository,
-      inject: [Connection]
-    },
+    // {
+    //   // factory provider
+    //   // bisa inject dari depedency lain
+    //   // menggunakan function untuk membuatnya
+    //   provide: UserRepository, 
+    //   useFactory: createUserRepository,
+    //   inject: [Connection]
+    // },
+    UserRepository,
     MemberService
-  ]
+  ],
+  exports: [UserService]
 })
 export class UsersModule { }

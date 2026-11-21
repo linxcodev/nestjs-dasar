@@ -24,6 +24,7 @@ import { Connection } from '../connection/connection';
 import { MailService } from '../mail/mail.service';
 import { UserRepository } from '../user-repository/user-repository';
 import { MemberService } from '../member/member.service';
+import { User } from 'generated/prisma/client';
 
 @Controller('/api/users')
 export class UserController {
@@ -39,7 +40,6 @@ export class UserController {
 
   @Get('/connection')
   getConnection() {
-    this.userRepository.save();
     this.mailService.send();
     this.emailService.send();
 
@@ -55,6 +55,15 @@ export class UserController {
       title: 'Template Engine',
       name: name
     });
+  }
+
+  @Get('/create')
+  // @UseFilters(ValidationFilter)
+  async create(
+    @Query('first_name') firstName: string,
+    @Query('last_name') lastName: string,
+  ): Promise<User> {
+    return this.userRepository.save(firstName, lastName);
   }
 
   @Get('/hello')
@@ -95,6 +104,11 @@ export class UserController {
     };
   }
 
+  @Get()
+  async findAll() {
+    return this.service.findAll();
+  }
+
   @Get('/:id')
   getById(@Param('id', ParseIntPipe) id: number): string {
     console.info(id * 10);
@@ -102,8 +116,11 @@ export class UserController {
   }
 
   @Post()
-  post(): string {
-    return 'POST';
+  async post(
+    @Body('first_name') firstName: string,
+    @Body('last_name') lastName: string,
+  ) {
+    return this.service.create(firstName, lastName);
   }
 
   @Get('/sample')

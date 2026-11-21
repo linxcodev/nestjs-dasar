@@ -392,9 +392,19 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# prisma init
+.agents/
+.claude/
+.cursor/
+.devin/
+
+
 =======
 # Local
 .env
 dist
 .webpack
 .serverless/**/*.zip
+
+# Prisma generated client
+src/generated/
